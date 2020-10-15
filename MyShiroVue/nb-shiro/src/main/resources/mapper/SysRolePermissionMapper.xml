@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nb.shiro.mapper.SysRolePermissionMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.nb.shiro.entity.SysRolePermission">
+        <id column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="permission_id" property="permissionId" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, role_id, permission_id
+    </sql>
+
+
+    <select id="getUserPermissionsByUserId" parameterType="String" resultType="String">
+        select distinct perms from sys_permission where id in (
+select distinct t2.permission_id from sys_user_role t1 join sys_role_permission t2 on t1.role_id=t2.role_id where t1.user_id =#{userId}
+) and perms is not null
+    </select>
+
+</mapper>
